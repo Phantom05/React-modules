@@ -185,3 +185,32 @@ class App extends Component {
 
 export default App;
 ```
+
+>state 중요! facebook에서 사용하는 무한 스크롤 로딩! infinite scroll
+```
+componentDidMount(){
+    setTimeout(() => {
+      // this.state.greeting = 'somthing'
+      //state를 직접적으로 쓰면 안됨. 에러가 발생함 state를 직접적으로 쓰면 Willmount나 그런 동작들이안함 
+      this.setState({
+        greeting:'Hello again!'
+        // 이렇게 하게 되면 5처후에 state가 다시 동작되서 뷰에 바뀜 개신기.. 5초 후에 Did Mount를 다시 시작하겠다는 것임. 이러면 화면을ㅇ 새로고침 하지 않고 바로 바꿀수 있음. 자동으로 render가 5초후에 다시되기 때문에. 중요한건 state를 사용할때 setState를 설정하고 사용해야한다는 점임.
+         //facebook이 state를 이용해서 로딩하고 있음.
+      })
+    }, 5000);
+
+
+    setTimeout(()=>{
+      this.setState({
+        movies:[
+          ...this.state.movies, //이코드를 삭제해버리면 state의 movies 모두를 아래걸로 대체해버림 그래서 이렇게 써야 뒤에 붙는거임. "...this.state.movies에 추가" 라는 뜻임 이전껀 그대로 나두고 그리고 이걸 아래 다가 두면은 가장 위에다가 출력됨 이거 중요 !
+          {
+            title:"Trainspotting",
+            poster:"http://cfile24.uf.tistory.com/image/99167B385A6B9AC306B4FD"
+          }
+        ]
+      })
+    },5000)
+  }
+
+```

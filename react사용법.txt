@@ -1,0 +1,147 @@
+react 사용법
+
+우선 사용할 파일을 만든다.
+npm init
+npm i create-react-app 을 사용하여 모듈을 설치하고
+create-react-app 파일명을 하여 안에 설치하고
+cd 파일명 하여 들어가서
+yarn start 으로 시작
+
+react는 컴포넌트 별로 사용하는것이며
+새로만들떄 상단에 항상
+import React, { Component } from 'react';
+로 사용방법을 알려야 하고, 여기에 css를 추가하고싶다면
+import './주소'; 이런식으로 넣어주면 됨
+그리고 사용할때는
+
+class 이름 extends Component{
+	render(){
+		return(
+		<h1>Hello world</h1>
+		)
+	}
+}
+
+export default 파일명;
+이런식으로 사용하는게 기본 컴포넌트 구조임.
+
+또한 public 파일에서 index.html파일을 변경할수잇음.
+index.html 해석하기.
+또한 App에 포함시킬땐 import 파일명 from './파일명' 이런 형식으로 넣어줘야함 
+전역에 있으면 굳이 또 npm i create-react-app 안해줘도됨.
+
+그리고 컴포넌트 안에서 2개의 컴포넌트를 합칠때
+
+class Movie extends Component{
+  render(){
+    return(
+      <div>
+      <MoviePoster />
+      <h1>Hello Movie</h1>
+      </div>
+    )
+  }
+}
+
+class MoviePoster extends Component{
+  render(){
+    return(
+      <img src="http://movie.phinf.naver.net/20131105_185/1383644515842maJk5_JPEG/movie_image.jpg?width=200" />
+    )
+  }
+}
+
+이런식으로 위에다가 합쳐서 App으로 보내주는데 중의할점은 <div> </div>로 묶어줬다는 점이다 이렇게 묶어주지 않으면 오류가남 저것만 들어가버리기 때문에 여기서 렌더링을 하고 들어가는것임.
+
+
+props//
+
+App.js
+const movies =[
+  'Matrix',
+  "Full Metal Jacket",
+  "Old boy",
+  "Star Wars"
+]
+
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+       <Movie title={movies[0]} />
+       <Movie title={movies[1]} />
+       <Movie title={movies[2]} />
+       <Movie title={movies[3]} />
+       <Movie title={movies[4]} />
+      </div>
+    );
+  }
+}
+
+이렇게 일일이 번호로 출력하거나 for문으로 돌려야 하는 것인데.
+Movie.js 에서 
+console.log(this.props)를 찍어보면 모두 확인할 수 있다.
+사용법은 쉽다. {this.props.title}괄호 치고 이렇게 사용하면 된다. 괄호를 안치면 그냥 문자로 인식해서 this.props.title이라는 글자가 출력됨.
+
+
+props.속성명 = 속성값을 가져옴
+
+
+
+//엄청난 양의 api를 가져오려면 이런식으로 하면 된다. map활용
+
+//api에서 엄청난 양을 갖고오고 싶을떈 이런식으로 가져온다.
+const movies = [
+  {
+    title:'Matrix',
+    poster:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwT8MZr6yQ4Len2PP5Vl6fG8XZ7RicaJfJ5gui4qUWZBDnc402"
+  },
+  {
+    title:'Matrix',
+    poster:"https://resizing.flixster.com/xqFW8SryVoj3g4hezXKsNJr9P9o=/206x305/v1.bTsxMTE2ODAyOTtqOzE3NzY5OzEyMDA7ODAwOzEyMDA"
+  }
+  ,{
+    title:'Matrix',
+    poster:"http://cfile30.uf.tistory.com/image/99B6AA33599A881417AEE3"
+  },
+  {
+    title:'Matrix',
+    poster: "http://moonhak.co.kr/home/wp-content/uploads/bookcover/%EC%8A%A4%ED%83%80%EC%9B%8C%EC%A6%88-%EC%94%A8%EB%84%A4%EC%95%84%ED%8A%B84_%ED%91%9C1_web.jpg"
+  }
+]
+
+class App extends Component {
+  
+  render() {
+
+    return (
+      <div className="App">
+       <Movie title={movieTitles[0]} poster={movieImage[0]}/>
+       <Movie title={movieTitles[1]} poster={movieImage[1]}/>
+       <Movie title={movieTitles[2]} poster={movieImage[2]}/>
+       <Movie title={movieTitles[3]} poster={movieImage[3]}/>
+       <Movie title={movieTitles[4]} poster={movieImage[4]}/>
+      </div>
+    );
+  }
+}
+이상태에서
+
+
+class App extends Component {
+  
+  render() {
+
+    return (
+      <div className="App">
+       {movies.map(movie => {
+         return <Movie title={movie.title} poster={movie.poster}/>
+       })}
+      </div>
+    );
+  }
+}
+
+이렇게 사용해 줄수 있다. 메소드를 사용할땐 항상 {} 로 시작해서 사용
+
