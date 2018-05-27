@@ -248,6 +248,220 @@ export default App;
 
 이런식으로 map으로 먼저 리턴을 해주면서 안에 컴포넌트명을 넣어 사용하면 된다.
 
+하지만 react내에서는 Array를 사용할때 무조건 key를 줘야한다. 
+
+그래서 map특성의 index를 사용하면 되는데 이 key값을 보여주기 싫다면 
+
+Proptype의 string만 사용하면 되고 필수적으로 사진이 보여줘야하기 때문에 
+
+isRequired 라는 속성도 사용할수있다. 
+
+하지만 이번 react가 업데이트되면서 proptypes를 없애서 따로 import를 해줘서 사용해줘야한다.
+
+이때 proptype선언은 최종적으로 엘리먼트를 호출하는곳 즉 Header.js에다가 선언해주면 되고, 
+
+이때 가장 상단에
+```javascript
+import PropTypes from 'prop-types';
+```
+해주고 Header 클래스 랜더링 전에 
+```javascript
+static propTypes ={
+  title:PropTypes.string.isRequired
+}
+```
+을 선언해서 사용하면된다.
+
+또한 will render did 마운팅은 모두 클래스 안에서 랜더링을 하기위해 동작되는거기 때문에 class 안쪽에다가 써줘야한다.
+
+state를 사용할떈 App에서 사용하면 좋다. 
+
+왜냐하면 App에서 모든 컴포넌트를 담당하고 있기 때문에 
+
+새로고침이 되고 App에서 전체를 통제해줘야하기 때문이다.
+
+state를 사용하려면 랜더가 끝난 후 Did마운트에서 사용해주면되는데 
+
+이떄, state를 사용하든말든 클래스 안쪽에 state={}은 있어야한다. 
+
+그리고 시간차로 state를 사용하려면 Did마운팅이 될때 settimeout으로 사용하면 되는데 
+
+그냥 state를 사용하면 안되고
+```javascript
+setTimeout 안에 this.setState({
+	greeting:'Bye!'
+})
+```
+이런식으로 setState속성을 사용해서 class 에있는 state객체의 안쪽을 수정해주는것이다.
+
+>기억해야할것! state를 사용할땐 반드시 setState를 사용할것!
+
+
+## state안으로 api를 옴겨 사용할때
+
+
+```javascript
+class App extends Component {
+  state ={
+   greeting:'Hello!',
+   movie:[
+    {
+      title:'부산행',
+      url:"http://t1.daumcdn.net/movie/fe9da43b455db93228b5bfa74dacc78107f1eb40"
+    },
+    {
+      title:'셜록',
+      url:"http://t1.daumcdn.net/movie/73d078e4c3d27c1d5d2240b4981dc94980676be1"
+    }
+   ]
+  }
+
+  componentWillMount(){
+    console.log('will')
+  }
+  componentDidMount(){
+    console.log('did');
+    setTimeout(() => {
+      this.setState({
+        greeting:'bye earth'
+      })
+    }, 1000);
+  }
+  
+  render() {
+    console.log('render')
+    return (
+      <div className="App">
+      {this.state.greeting}
+        {this.state.movie.map((x,y) =>{
+          //여기처럼 this.state.movie로 옮겨주면된다. 
+          //까먹을수 있으니 보고 넘어가기
+          return <Header title={x.title} url={x.url} key={y}/>
+        })}
+
+      </div>
+    );
+  }
+}
+export default App;
+```
+
+## facebook처럼 시간차로 사진이나 무한 스크롤 하고싶을때,
+
+...속성을 사용해주면된다. 뒤에다가 추가하겠다는것이다.
+
+때문에, setTimeout 안의 this.setState에다가 movie:[...]해주고 타켓을 잡아서 추가 해주면된다.
+
+```javascript
+  componentDidMount(){
+    console.log('did');
+    setTimeout(() => {
+      this.setState({
+        greeting:'bye earth',
+        movie:[
+          ...this.state.movie,
+         {
+          title:'괴물',
+          url:"http://img1.daumcdn.net/thumb/R720x0/?fname=http://cfile116.uf.daum.net/image/0174AC3551948E082C368E"
+        }
+      ]
+      })
+    }, 1000);
+  }
+```
+이런식으로 5초후 어디에? 라고 타겟을 잡아주는것과 같다 ...을 맨아래로 내리면 맨위로 추가되게된다.
+
+만약 ...를 사용하지 않게되면 movie:[]프로퍼티의 값을 대체해버리겠다는 사용법이 되버린다.
+
+
+## Loading state
+state를 사용할때 데이터 정보가 많으면 바로 뜨지 않는다.
+
+때문에 바로보이는 화면이 깨져보일 수 있으므로 loading state기법을 사용한다.
+
+app내의 내용들을 함수에 담고 매개변수로 넣어 true시 함수를 호출하고 아닐시 다른 행동을 취해놓는다.
+
+때문에 loading이 되게 하기위해 setState안에 api정보들을 담아놓고 일정한 시간후에 실행하는것이다.
+
+그리고 react내에서 함수를 사용할땐 반드시 _언더스코어로 시작한다 react내의 기능이 
+
+너무 많기때문에 이름이 금방 겹치게 되기 때문이다.
+
+```javascript
+class App extends Component {
+  state ={}
+
+  componentWillMount(){
+    console.log('will')
+  }
+  componentDidMount(){
+    console.log('did');
+    setTimeout(() => {
+      this.setState({
+        movie:[
+        {
+          title:'괴물',
+          url:"http://img1.daumcdn.net/thumb/R720x0/?fname=http://cfile116.uf.daum.net/image/0174AC3551948E082C368E"
+        },
+        {
+          title:'괴물',
+          url:"http://img1.daumcdn.net/thumb/R720x0/?fname=http://cfile116.uf.daum.net/image/0174AC3551948E082C368E"
+        },
+        {
+          title:'부산행',
+          url:"http://t1.daumcdn.net/movie/fe9da43b455db93228b5bfa74dacc78107f1eb40"
+        },
+        {
+          title:'셜록',
+          url:"http://t1.daumcdn.net/movie/73d078e4c3d27c1d5d2240b4981dc94980676be1"
+        },
+        {
+          title:'트와일라잇',
+          url:'http://talkimg.imbc.com/TVianUpload/TVian/MBCinfo/images/info/20101229134251_P.jpg'
+        }
+      ]
+      })
+    }, 3000);
+
+  }
+  
+  _renderMovie=()=>{
+   const movies = this.state.movie.map((x,y) =>{
+    return <Header title={x.title} url={x.url} key={y}/>
+  })
+  return movies
+  }
+
+  render() {
+    console.log('render')
+    return (
+      <div className="App">
+      {this.state.movie?this._renderMovie() :'Loading'}
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+이렇게 될 수가 있겠다. state전부를 setTiemout안에 넣어놓고 호출하는것이다.
+
+```javascript
+this.state.movie?this._renderMovie() :'Loading'
+```
+이 부분을 잘보면 App클래스 내의 state객체의 movie에 접근했을때 현재 아무값도 없기때문에
+
+Loading이 호출되게 되고 5초후 this.state.movie안을 대체해주기 때문에 들어가게 된다.
+
+
+
+
+
+
+
+
+
+
 ```javascript
 create-react-app new
 npm install --save react-router@next
