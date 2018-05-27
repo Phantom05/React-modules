@@ -1,5 +1,5 @@
-
-Movies.js
+# REACT STUDY
+### Movies.js
 
 ```javascript
 import React, {Component} from 'react';
@@ -72,7 +72,7 @@ export default Movie;
 ```
 
 
-App.js
+### App.js
 ```javascript
 import React, { Component } from 'react';
 import './App.css';
@@ -215,7 +215,7 @@ componentDidMount(){
 
 ```
 
->>꿀팁
+## 꿀팁
 
 App.js에다가 제이슨 형식
 
@@ -247,3 +247,39 @@ export default App;
 ```
 
 이런식으로 map으로 먼저 리턴을 해주면서 안에 컴포넌트명을 넣어 사용하면 된다.
+
+```javascript
+create-react-app new
+npm install --save react-router@next
+```
+```
+vscode
+
+reactjs code snipit 설치후
+```
+src하고 탭 그럼 컴포넌트 틀이 자동적으로 나옴 개꿀
+```javascript
+class home extends Component {
+  render() {
+    return (
+      <div>
+        <h2>Home</h2>
+      </div>
+    );
+  }
+}
+
+export default home;
+```
+이런 구조이지만 state를 사용하지 않는다면
+```javascript
+const Homne = () =>{
+  return(
+    <div>
+      <h2>Home</h2>
+    </div>
+  );
+};
+```
+이구조를 더 권장함 
+그리고 파일이름도 컴포넌트는 다 대문자
