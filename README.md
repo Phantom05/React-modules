@@ -456,6 +456,10 @@ Loading이 호출되게 되고 5초후 this.state.movie안을 대체해주기 �
 
 
 
+## React의 function
+state가 필요없는 즉 render, willmount, didmount가 필요없는 1개의 이미지 1개의 html태그 이렇게
+
+간단한 컴포넌트는 따로 class를 만들 필요가 없다 때문에 그냥 function으로 만들어주면된다.
 
 
 
