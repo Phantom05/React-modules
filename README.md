@@ -849,3 +849,57 @@ class Counter extends Component {
 
 export default Counter;
 ```
+
+여기서 카운터를 4까지 올리면 
+
+![arinrke](https://user-images.githubusercontent.com/33567964/40771740-242460dc-64f9-11e8-80cc-582a40fd2088.png)
+
+이렇게 화면에 뜨게된다.
+
+프로덕션에선 이 화면은 나타나지 않습니다. 여기서 X 를 눌러보시면,
+
+![ue8tmyq](https://user-images.githubusercontent.com/33567964/40771811-50525664-64f9-11e8-89b9-1cdf6a7737b2.png)
+
+그냥 비어있는 페이지가 나온다.
+
+오류가 발생하는 잦은 부분은 다음과 같다.
+
+보통, 렌더링 부분에서 오류가 발생하는것은 사전에 방지해주어야 합니다. 주로 자주 에러가 발생하는 이유는 다음과 같습니다:
+
+존재하지 않는 함수를 호출하려고 할 때 (예를들어서 props 로 받았을줄 알았던 함수가 전달되지 않았을때)
+```javascrip
+this.props.onClick();
+```
+배열이나 객체가 올 줄 알았는데, 해당 객체나 배열이 존재하지 않을때
+```javascrip
+this.props.object.value; // object is undefined
+this.props.array.length; // array is undefined
+```
+이러한 것들은 render 함수에서 다음과 같은 형식으로 막아 줄 수 있습니다.
+
+하지만 이런 오류페이지가 나오면 리액트가 죽어버리기 때문에 사전에 방지해야한다.
+
+그마법의코드는 바로
+
+```javascript
+render() {
+  if (!this.props.object || !this.props.array || this.props.array.length ===0) return null;
+  // object 나 array 를 사용하는 코드
+}
+```
+이것이다. 이부분을 component render()바로 아래에 위치해주면 된다.
+
+## input 상태 관리하기
+지금까지 배웠던건
++ 컴포넌트 만들기
++ props와 state
++ LiftCycleAPI
+이렇게 된다. 사실 해보면 별거 없다 이해하는데 오래걸려서 그렇지..
+
+리액트는, 그래도 자바스크립트와 가깝기때문에 다행이다. 배울건 그리 많지 않다고 한다....항간에는..
+
+>INPUT상태를 관리하는 방법과 배열을 다루는 방법을 알아보자
+
+```javascript
+
+```
