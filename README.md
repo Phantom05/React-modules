@@ -900,6 +900,252 @@ render() {
 
 >INPUT상태를 관리하는 방법과 배열을 다루는 방법을 알아보자
 
-```javascript
-
+새로운 프로젝트 생성
 ```
+create-react-app phone-book
+cd phone-book
+yarn start
+```
+
+우선, src 디렉토리 내부에 components 라는 디렉토리를 만들자. 
+
+그리고, 그 안에 PhoneForm.js 라는 파일을 만들어서 다음 코드를 입력하자.
+
+```javascript
+// file: src/components/PhoneForm.js
+import React, { Component } from 'react';
+
+class PhoneForm extends Component {
+  state = {
+    name: ''
+  }
+  handleChange = (e) => {
+    this.setState({
+      name: e.target.value
+    })
+  }
+  render() {
+    return (
+      <form>
+        <input
+          placeholder="이름"
+          value={this.state.name}
+          onChange={this.handleChange}
+        />
+        <div>{this.state.name}</div>
+      </form>
+    );
+  }
+}
+
+export default PhoneForm;
+```
+
+onChange 이벤트가 발생하면, e.target.value 값을 통하여 이벤트 객체에 담겨있는 현재의 텍스트 값을 읽어올 수 있다.
+
+해당 값을 state 의 name 부분으로 설정한다.
+
+render 부분에서 input 을 렌더링 할 떄에는 value 값과 onChange 값을 넣어주었다. 
+
+onChange 는 input 의 텍스트 값이 바뀔때마다 발생하는 이벤트이다. 
+
+여기에 우리가 만들어둔 handleChange 를 설정했다. 
+
+그리고, 나중에 우리가 데이터를 등록하고나면 이 name 값을 공백으로 초기화 해줄건데, 
+
+그렇게 초기화 됐을 때 input 에서도 반영이 되도록 value 를 설정해주었다.
+
+그리고 그 하단에는 name 값이 잘 바뀌고 있는지 확인 할 수 있도록 값을 렌더링해주었다.
+
+자~ 그러면 이 컴포넌트를 App 에서 보여줄게요.
+```javascript
+// file: src/App.js
+import React, { Component } from 'react';
+import PhoneForm from './components/PhoneForm';
+
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <PhoneForm />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+input에 글을 써보면 바로 아래쪽으로 나오게 될 것이다.
+
+```javascript
+// file: src/components/PhoneForm.js
+import React, { Component } from 'react';
+
+class PhoneForm extends Component {
+  state = {
+    name: '',
+    phone: ''
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+  render() {
+    return (
+      <form>
+        <input
+          placeholder="이름"
+          value={this.state.name}
+          onChange={this.handleChange}
+          name="name"
+        />
+        <input
+          placeholder="전화번호"
+          value={this.state.phone}
+          onChange={this.handleChange}
+          name="phone"
+        />
+        <div>{this.state.name} {this.state.phone}</div>
+      </form>
+    );
+  }
+}
+
+export default PhoneForm;
+```
+
+아마 또 다른 이벤트 핸들러 함수를 만들면 되지 않을까? 라고 생각할 수도 있다.
+
+ 그 방법은 물론 나쁜 방법은 아니다, 근데 더 나은 방법이 있다.
+
+바로, input 의 name 속성을 사용하는건데, render 부분에 보면,
+
+ 각 input 에 name 값을 부여해주었다. 이를 통하여 우리는 각 input 을 구분 할 수 있게 됐다.
+
+이 name 값은, event.target.name 을 통해서 조회 할 수 있다.
+
+setState 내부에서 사용된 문법은 Computed property names 라는 문법이다. 
+
+혹여나 key 부분에 [ ] 괄호가 사용된 것이 생소하다면 링크를 클릭해보자.
+
+잘 작동한다.
+
+
+
+## ☆ 부모 컴포넌트에 정보 전달하기
+데이터들이 닌자처럼 돌아다니게 할수 있다..익숙해지자
+
+App(부모 컴포넌트) 에다가 함수를 만들고 자식 컴포넌트 props로 함수를 써넣는것이다.
+
+그럼 자식이 props를 이용하여 무언가를 했을때  App에서 실행되면서 만든 함수가 동작할것이다.
+
+
+우리는 App 에서 handleCreate 라는 메소드를 만들고, 
+
+이를 PhoneForm 한테 전달해주겠다. 
+
+그리고, PhoneForm 쪽에서 버튼을 만들어서 submit 이 발생하면 
+
+props 로 받은 함수를 호출하여 App 에서 파라미터로 받은 값을 사용 할 수 있도록 하겠다.
+```javascript
+// file: src/App.js
+import React, { Component } from 'react';
+import PhoneForm from './components/PhoneForm';
+
+class App extends Component {
+  handleCreate = (data) => {
+    console.log(data);
+  }
+  render() {
+    return (
+      <div>
+        <PhoneForm
+          onCreate={this.handleCreate}
+        />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+그 다음엔, PhoneForm 에서 버튼과 onSubmit 이벤트를 설정하겠다.
+
+```javascript
+// file: src/components/PhoneForm.js
+import React, { Component } from 'react';
+
+class PhoneForm extends Component {
+  state = {
+    name: '',
+    phone: ''
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+  handleSubmit = (e) => {
+    // 페이지 리로딩 방지
+    e.preventDefault();
+    // 상태값을 onCreate 를 통하여 부모에게 전달
+    this.props.onCreate(this.state);
+    // 상태 초기화
+    this.setState({
+      name: '',
+      phone: ''
+    })
+  }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          placeholder="이름"
+          value={this.state.name}
+          onChange={this.handleChange}
+          name="name"
+        />
+        <input
+          placeholder="전화번호"
+          value={this.state.phone}
+          onChange={this.handleChange}
+          name="phone"
+        />
+        <button type="submit">등록</button>
+      </form>
+    );
+  }
+}
+
+export default PhoneForm;
+```
+
+handleSubmit 함수를 확인해보자. 
+
+맨 위에 e.preventDefault() 라는 함수가 호출됐지? 
+
+이 뜻은, 원래 이벤트가 해야 하는 작업을 방지시킨다는 의미이다. 
+
+원래는 form 에서 submit 이 발생하면 페이지를 다시 불러오게 되는데, 
+
+그렇게 되면 우리가 지니고있는 상태를 다 잃어버리게 되니까 이를 통해서 방지해주었다.
+
+그 다음에는, props 로 받은 onCreate 함수를 호출하고, 상태값을 초기화해주었다.
+
+render 부분에서는 submit 버튼을 만들고, form 부분에 onSubmit 이벤트를 등록해주었다.
+
+코드를 다 작성하셨으면, 제대로 작동하는지 확인해보자.
+
+반복해서 학습해보자.
+
+## 배열 다루기, 생성과 렌더링
+
+자바스크립트에서 배열을 다뤄보신분이라면 그냥 배열에 데이터를 추가할 때, 
+
+push 를 사용하니까 this.state.array.push('some value'); 이런식으로 하면 되겠지? 
+
+절.대.안 됨.
