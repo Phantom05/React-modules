@@ -501,3 +501,351 @@ const Homne = () =>{
 ```
 이구조를 더 권장함 
 그리고 파일이름도 컴포넌트는 다 대문자
+
+
+## 리액트 jsx 활용
+
+jsx부분은 renter하고 return의() 안쪽부분을말함
+
+jsx가 js파일 내에서 createelement같은걸로 해서 html을 생성해줘야하는데 
+
+이걸 편리하게 html문법으로 사용하게끔 해주는것이다.
+
+그리고 jsx내에서 js를 사용하기위해선
+```javascript
+        {
+          1+1 ===2
+          ?(<div>맞아요!</div>)
+          :(<div>틀려요!</div>)
+        }
+```
+이런식으로 사용할 수있음 !
+```javascript
+{console.log('Hello')}
+```
+즉, {}요골로 js를 사용가능
+하지만 왠만하면 JSX밖, 즉, render()와 return()사이에서 사용하는게 좋다
+```javascript
+class App extends Component {
+  render() {
+    const value = 1;
+    return (
+      <div className="App">
+        {
+          (()=>{
+            if(value ===1) return (<div>하나</div>);
+          })()
+        }
+        {console.log('Hello')}
+      </div>
+    );
+  }
+}
+```
+대략 이런식 으로 사용하면 좋다.
+
+
+### react에서 css 사용
+```javascript
+import React, { Component } from 'react';
+
+class App extends Component {
+  render() {
+    const style ={
+      backgroundColor:'black',
+      padding:'16px',
+      color:'white',
+      fontSize:'20px',
+      fontWeight:'bold'
+    };
+
+    return (
+      <div style={style}>
+      Hello world
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+{/*...*/}주석은 요로쿰 js내에서 주석사용하는거와 같음 하지만 jsx내부 이니까 {}로 묶어주는 것이다.
+
+## defaultProps
+
+가끔씩은 실수로 props 를 빠트려먹을때가 있다. 
+
+혹은, 특정 상황에 props 를 일부러 비워야 할 때도 있구. 
+
+그러한 경우에, props 의 기본값을 설정해줄 수 있다, 그것이 바로 defaultProps 이다.
+
+```javascript
+//MyName.js
+import React, { Component } from 'react';
+
+class MyName extends Component {
+  static defaultProps = {
+    name: '기본이름'
+  }
+  render() {
+    return (
+      <div>
+        안녕하세요! 제 이름은 <b>{this.props.name}</b> 입니다.
+      </div>
+    );
+  }
+}
+
+export default MyName;
+```
+
+이렇게 하면 만약에 <MyName /> 이런식으로 name 값을 생략해버리면 “기본이름” 이 나타나게 될 것이다. 
+
+참고로, defaultProps 는 다음과 같은 형태로도 설정 할 수 있다.
+
+```javascript
+//MyName.js
+import React, { Component } from 'react';
+
+class MyName extends Component{
+
+  render(){
+    return(
+      <div>
+      안녕하세요 ! 제 이름은 <b>{this.props.name}</b>입니다 !
+      </div>
+    )
+  }
+}
+
+MyName.defaultProps ={
+  name :'기본이름'
+}
+
+export default MyName;
+```
+
+우리가 곧 알아볼 함수형 컴포넌트에서 defaultProps 를 설정할땐 위 방식으로 하면 된다.
+
+
+```javascript
+//App.js
+import React, { Component } from 'react';
+import './App.css';
+import MyName from './MyName';
+
+class App extends Component {
+
+  render() {
+    return (
+      <MyName name="리액트" value="뮻" />
+    );
+  }
+}
+
+export default App;
+```
+```javascript
+//MyName.js
+
+import React, { Component } from 'react';
+
+const MyName = ({name})=>{
+  return(
+    <div>
+      안녕하세요 ! 제이름은 {name} 입니다.
+    </div>
+  )
+}
+
+export default MyName;
+```
+```javascript
+//간단 예시
+import React, { Component } from 'react';
+
+const YourName = ()=>{
+  return(
+    <div>
+      Hello
+    </div>
+  )
+}
+export default YourName;
+```
+
+
+## state 예제
+
+```javascript
+//Counter.js
+import React, { Component } from 'react';
+
+class Counter extends Component{
+  state ={
+    number:0
+  }
+  handleIncrease = ()=>{
+    this.setState({
+      number:this.state.number +1
+      //arrow function 안에서의 this는 전역을 가르키기 때문에 이와 같은 코드가 가능.
+    });
+  }
+  handleDecrease =()=>{
+    this.setState({
+      number:this.state.number -1
+    });
+  }
+  
+  render(){
+    return(
+      <div>
+        <h1>카운터</h1>
+        <div>값 : {this.state.number}</div>
+        <button onClick={this.handleIncrease}>+</button>
+        <button onClick={this.handleDecrease}>-</button>
+      </div>
+    )
+  }
+}
+export default Counter;
+```
+매우 쩐다... button 클릭에 함수를 넣고 그 함수를 state와 연결시킨다.
+
+setState는 state를 실시간으로 변경해준다. 하지만 잘써야하는데 아애 state를 대체 버리기 때문에
+```javascript
+ state = {
+    number: 0,
+    foo: {
+      bar: 0,
+      foobar: 1
+    }
+  }
+
+  ...
+
+  this.setState({
+  number: 0,
+  foo: {
+    ...this.state.foo,
+    foobar: 2
+  }
+});
+```
+이런식으로 쩜쩜쩜을 사용해서 뒤에 추가해주는 방법을 사용해야한다.
+
+
+## 주의사항
+
+여기서 정말로!! 주의해야 하는게있다, 리액트에서 이벤트 함수를 설정할때 html 과 다음과 같은 사항이 다르다.
+
++ 이벤트이름을 설정 할 때 camelCase 로 설정해주어야 한다. onclick 은 onClick, onmousedown 은 onMouseDown, onchange 는 onChange 이런식으로 !.
+
++ 이벤트에 전달해주는 값은 반드시 함수 여야 한다. 만약에 onClick={this.handleIncrease()} 이런식으로 하게 된다면, 렌더링을 할 때 마다 해당 함수가 호출이된다. 그렇게 되면 정말 큰 일이 발생한다. 렌더링 -> 함수 호출 -> setState -> 렌더링 -> 함수 호출 -> 무한반복.. 이렇게 되버리는 거지 ㅠㅠ!
+그러니까 꼭 주의해야 한다 렌더링 함수에서 이벤트를 설정 할 때 여러분이 만든 메소드를 호출하지 말자!
+
+자~ 그러면 설명이 끝났으니 이 컴포넌트를 App 에서 불러와서 렌더링 해보자.
+
+
+## LiftCycle API
+이걸 활용해서 재미난 일들을 많이 해볼 수 있다.
+
+componentWillMount - > componentRender - > componentDidMount
+
+WillMount는 '컴포넌트'가 화면에 나타나기 전 즉 , 서버 사이드 쪽에서 활용했는데 이 API는 더이상 필요하지 않게 되었다.
+
+중요한놈
+```javascript
+componentDidMount() {
+  // 외부 라이브러리 연동: D3, masonry, etc
+  // 컴포넌트에서 필요한 데이터 요청: Ajax, GraphQL, etc
+  // DOM 에 관련된 작업: 스크롤 설정, 크기 읽어오기 등
+}
+```
+이 API 는 여러분의 컴포넌트가 화면에 나타나게 됐을 때 호출된다. 
+
+여기선 주로 D3, masonry 처럼 DOM 을 사용해야하는 외부 라이브러리 연동을 하거나, 해당 컴포넌트에서 필요로하는 데이터를 요청하기 위해 axios, fetch 등을 통하여 ajax 요청을 하거나, DOM 의 속성을 읽거나 직접 변경하는 작업을 진행한다.
+
+```javascript
+componentWillMount() {
+    console.log('componentWillMount (deprecated)');
+  }
+  //render
+
+  componentDidMount() {
+    console.log('componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // 5 의 배수라면 리렌더링 하지 않음
+    console.log('shouldComponentUpdate');
+    if (nextState.number % 5 === 0) return false;
+    return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('componentWillUpdate');
+  }
+  //render
+  
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate');
+  }
+```
+이 순서대로 진행되게 된다.
+
+하지만 react에서는 함수에서 에러가 발생했을때, 리액트 앱이 크러쉬 되어 버린다.
+
+그럴때 사용할 수 있는 API가 한가지 있다.
+```javascript
+componentDidCatch(error, info) {
+  this.setState({
+    error: true
+  });
+}
+```
+바로 componentDidCatch 이녀석이다.
+
+에러가 발생하면 이런식으로 componentDidCatch 가 실행되게 하고, 
+
+state.error 를 true 로 설정하게 하고, render 함수쪽에서 이에 따라 에러를 띄워주시면 된다.
+
+이 API 를 사용하시게 될 때 주의하실 점이 있다, 
+
+컴포넌트 자신의 render 함수에서 에러가 발생해버리는것은 잡아낼 수는 없지만, 
+
+그 대신에 컴포넌트의 자식 컴포넌트 내부에서 발생하는 에러들을 잡아낼 수 있다
+
+아래를 살펴보자
+
+```javascript
+import React, { Component } from 'react';
+
+const Problematic = () => {
+  throw (new Error('버그가 나타났다!'));
+  return (
+    <div>
+      
+    </div>
+  );
+};
+
+class Counter extends Component {
+  // ... 생략
+  
+  render() {
+    return (
+      <div>
+        <h1>카운터</h1>
+        <div>값: {this.state.number}</div>
+        { this.state.number === 4 && <Problematic /> }
+        <button onClick={this.handleIncrease}>+</button>
+        <button onClick={this.handleDecrease}>-</button>
+      </div>
+    );
+  }
+}
+
+export default Counter;
+```
