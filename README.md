@@ -47,6 +47,24 @@ class Movie extends Component{
   }
 }
 ```
+render 함수가 반환하는 마크업의
+
+최상위에는 단일 Root Node가 있어야 한다.
+
+모든 element는 닫혀야 한다.  />
+
+attribute는 camelCase로 작성해야한다
+```js
+<div className="wrapper"> 
+<input id="name" />
+<table cellPadding="5"><table/>
+<label htmlFor="name">이름</label>
+</div>
+```
+
+class는 className으로
+label의 for는 htmlFor로
+
 
 >클래스명을 <클래스명 /> 이렇게쓰면 들어가게된다. //jsx라고 부름
 컴포넌트 > 랜덜() > 리턴 > jsx
@@ -690,6 +708,7 @@ class Counter extends Component{
     this.setState({
       number:this.state.number +1
       //arrow function 안에서의 this는 전역을 가르키기 때문에 이와 같은 코드가 가능.
+      //constructor 내에서 this를 쓰면 바인딩이 안되서 오류가 뜸 
     });
   }
   handleDecrease =()=>{
@@ -713,8 +732,16 @@ export default Counter;
 ```
 매우 쩐다... button 클릭에 함수를 넣고 그 함수를 state와 연결시킨다.
 
-setState는 state를 실시간으로 변경해준다. 하지만 잘써야하는데 아애 state를 대체 버리기 때문에
+setState는 state를 실시간으로 변경해준다. 하지만 setState는 잘써야하는데, 왜냐하면 깊은곳 까지 파악할수 없기때문에 2뎁스만 들어가도 모두 대체해버린다.
 ```javascript
+ state = {
+    number: 0,
+    foo: 'bar'
+  }
+  //이상태일때
+  this.setState({ number: 1 }); 
+  //을하게되면 foo 는 그대로 유지된다. 하지만!
+
  state = {
     number: 0,
     foo: {
@@ -722,7 +749,7 @@ setState는 state를 실시간으로 변경해준다. 하지만 잘써야하는�
       foobar: 1
     }
   }
-
+//이상태일떄
   ...
 
   this.setState({
@@ -732,6 +759,7 @@ setState는 state를 실시간으로 변경해준다. 하지만 잘써야하는�
     foobar: 2
   }
 });
+//저 ...this.state.foo를 해주지 않는다면 그냥 아애 대체가 되어버린다. 떄문에
 ```
 이런식으로 쩜쩜쩜을 사용해서 뒤에 추가해주는 방법을 사용해야한다.
 
@@ -1149,3 +1177,18 @@ render 부분에서는 submit 버튼을 만들고, form 부분에 onSubmit 이�
 push 를 사용하니까 this.state.array.push('some value'); 이런식으로 하면 되겠지? 
 
 절.대.안 됨.
+
+
+## 짤막 팁
+```js
+ handleDecrease =()=>{
+    const {number} = this.state;
+    //const number = this.state.number 
+    //변수 number를 생성하고 this.state 뒤에다가 .number를 붙힘
+    //const { ao: { dddd }  } = this.state 유추해보기
+    this.setState(
+      {number:number-1}
+  )
+  }
+  //number: 요기가 중요 저위에서 number변수에 this.state.number를 넣은거기 때문에 -1해주는것임
+```
