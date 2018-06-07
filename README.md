@@ -1192,3 +1192,176 @@ push 를 사용하니까 this.state.array.push('some value'); 이런식으로 �
   }
   //number: 요기가 중요 저위에서 number변수에 this.state.number를 넣은거기 때문에 -1해주는것임
 ```
+```js
+  const skipIt=true;
+  let z = 0;
+  const result = skipIt || z++;
+  // true
+  //단축평가에 의해, 왼쪽에서 true일시 오른쪽으로 넘어가지 않음, false로 해보기
+  //또한 true로 변경했을시 부수효과는 적용되지 않음, ++가 부수효과임, 하지만 z는 갖고있음.
+
+  const doIt = false;
+  let g = 0;
+  const resultDo = doIt && g++;
+  //0
+  //단축평가에 의해, 첫번째에서 false시 오른쪽으로 넘어가지 않고 종료됨, 반면에 true라면?
+  // true를 반환하지 않고 0을 반환하게됨. 책에는 저렇게 피연산자말고,
+  //직접적으로 true를 const resultDo = true && g++;로 사용하면 true가 반환된다던대
+  //0이 반환된다, 좀 더 알아보니 Boolean이 아니라 truthly한 값을 반환한다고 하더라..
+```
+## es6 중요
+
+```js
+해체할당
+const obj ={b:2,c:3,d:4};
+const {a,b,c} = obj;
+//이렇게 있으면 obj의 값을 할당해서 왼쪽의 변수에 넣게된다. 
+//이때, 반드시 obj내의 프로퍼티에 있는 인자로 변수명을 지정해야한다.
+// a : undefined, b : 2, c : 3
+```
+
+```js
+OR표현식
+ 1+1==3 || console.log('Hello');
+ //hello
+ 1+1 ==2 && console.log('hello');
+ //hello
+```
+```js
+3항 연산자
+if(isPrime(n)){
+  label = 'prime'
+}else{
+  label = 'non-prime'
+}
+//이 구문을
+label = isPrime(n)? 'prime' : 'non-prime'; 
+```
+```js
+함수 참조
+getGreeting(); // 'Hello, World"
+getGreeting //'function getGreeting()
+//이렇게 참조를 하기때문에 자바스크립트는 매우 유연하다고 할수 있다
+const f = getFreeting;
+f() //'Hello, world!
+//이방식은 객체, 배열 모두 가능함 
+const arr = [1,2,3];
+arr[1]=getGreeting // arr은 이제 [1,function getGreeting(),2]이다.
+arr[1]() //"Hello, world!"
+```
+```js
+함수와 매개변수
+//갑을 함수 내부에서 수정한다고 해서 함수 밖에 선언된 값이 변경되지 않는다.
+//할당이 되어 있기 때문이다.
+//하지만 object를 함수 내부에서 수정한다면 값이 변한다.
+//참조가 되어 있기 때문이다.
+
+//그렇다면 함수내부에서 다시 같은 이름의 오브젝트로 생성을한다면 어떻게될까?
+function f(o) {
+      o.message = `f에서 수정함`;
+      o = {
+        message: '새로운 객체!'
+      }
+      console.log(`f 내부 o.message=${o.message}(할당 후)`)
+    }
+let o = {
+      message: `초기값`
+    }
+
+console.log(`f()를 호출하기전 o.message=${o.message}`);
+// f()를 호출하기전 o.message=초기값
+f(o) // 함수 실행
+// f 내부 o.message=새로운 객체!(할당 후)
+console.log(`f()를 호출후 o.message=${o.message}`);
+// f()를 호출후 o.message=f에서 수정함
+
+보시다 시피 함수 안에서 새롭게 객체를 할당 시 이름이 같아도 전혀 다른 
+객체로 재 선언이 되게 된다. 함수내부의 o 와 함수 밖의 o는 전혀 다르게 된다.
+```
+원시 값 타입을 전달할땐 값이 깊은 복사가 되고, 객체를 전달할땐 참조 타입으로 얉은 복사가 되기 때문이다.
+
+```js
+매개변수 해체
+function getSentence({subject,verb,object}){
+      return `${subject} ${verb} ${object}`;
+    }
+
+const o ={
+      subject:"I",
+      verb:"love",
+      object:"JavaScript"
+    }
+
+console.log(
+    getSentence(o)
+  )
+    //I love JavaScript
+    //매개변수에서 o객체를 해체해버렸다. 마찬가지로 동일한 프로퍼티가 있어야 가능하다.
+
+function getSentecne([subject,verb,object]){
+      return `${subject} ${verb} ${object}`;
+    }
+const arr=['I','LOVE','JAVASCRIPT']
+console.log(
+   getSentecne(arr)
+  )
+  //배열도 마찬가지로 해체할 수 있다.
+
+
+확산연산자
+function getSentecne([subject,verb,object]){
+      return `${subject} ${verb} ${object}`;
+    }
+const arr=['I','LOVE','JAVASCRIPT']
+    console.log(
+      getSentecne(arr)
+    );
+
+function addPrefix(prefix,...words){
+  const prefixedWords = [];
+  for(let i=0;i<words.length;i++){
+        prefixedWords[i]=prefix+words[i];
+      }
+  return prefixedWords;
+    }
+    
+console.log(
+  addPrefix("con","verse","vex")
+    )
+     //["converse","convex"]
+
+옛날엔 es5에선 이러한 작업을 할때 arguments 가짜배열을 이용하여 
+다시 Array.prototype.slice.call로 붙혀줬었어야 했는데, 
+확산 연산자가 생김으로 그럴 필요가 없이 편해졌다.
+```
+
+```js
+매개변수에는 또한, es6부터 기본값을 지정할 수 있다.
+function f(a,b="default",c=3){
+     return `${a} - ${b} - ${c}`;
+   }
+   console.log(f(5,6,7))
+   //5 - 6 - 7
+   console.log(f(5,6))
+   //5 - 6 - 3
+   console.log(f(5))
+   //5 - default - 3
+   console.log(f())
+   //undefined - default - 3
+
+es6부터는 객체안쪽에 함수를 편하게 넣을 수 있다.
+const o ={
+     func(){return 'Woof!'},
+     abc:'Hello'
+   }
+console.log(o.func());
+// 객체안에서 : 없이 바로 함수를 쓸수가 있다.
+const o ={
+     func(){
+       return 'Woof!'
+      },
+     abc:'Hello'
+   }
+console.log(o.func())
+//이렇게도 가능하다.
+```
