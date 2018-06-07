@@ -1418,3 +1418,79 @@ const k ={
     //window
 
 ```
+```js
+전역은 거의 무조건 좋지 않으니까 해당 정보들은 모두 객체안에 넣어두기
+
+let name = "Irena";
+let age = 25;
+
+function greet(){
+      console.log(`Hello ${name}!`);
+    }
+function getBirYear(){
+      return new Date().getFullYear() -age;
+    }
+    //이렇게 되면 두 함수가 전역 변수에 의존하고 있다.
+    //허나 만약 저 흔하디 흔한 이름의 전역변수가 어딘가에서 바뀐다면?
+    //프로그램은 무너지게되고 오류가날것이다.
+    //때문에 모든 전역변수는 없애는게 좋으며, 이때 객체를 이용하는 것이 좋다.
+
+
+let user = {
+       name : "Irena",
+        age : 25
+    }
+function greet(){
+      console.log(`Hello ${user.name}!`);
+    }
+function getBirYear(){
+      return new Date().getFullYear() -user.age;
+    }
+// 이렇게되면 1000가지중에 10가지로 위험성을 줄였다.
+// 하지만 전역에 선언된 객체를 지금도 너무 쉽게 접근하므로써
+// 오류가 생길 가능성이 적지 않다.
+// 이제 이 전역 의존성을 없애보자
+
+let user = {
+       name : "Irena",
+        age : 25
+    }
+function greet(user){
+      console.log(`Hello ${user.name}!`);
+    }
+function getBirYear(user){
+      return new Date().getFullYear() -user.age;
+    }
+// 매개변수로 넣음으로써 전역의존성을 모두 없애버렸다.
+// 이렇게 전역변수를 사용하지 않고 매개변수와, 객체를 이용해서
+// 원하는 타겟을 좀더 정확히 사용하는것이 가장 좋다
+
+console.log(greet())
+console.log(getBirYear())
+사실 프로그램이 이렇게 단순하다면, 전역 변수를 쓰더라도
+문제가 생길 소지는 전혀 없다.
+하지만 프로그램이 수천, 수만 행이 되어 모든 스코프를 기억하고
+관리할 수 없게 된다면, 전역 스코프에 의존하지 않는 것이
+정말 중요해진다.
+```
+
+```js
+var과 let 의 호이스팅, 스코프의 중요성, 엄청 유용한 변수숨기기도 안됨.
+let x = 3;
+if(x ===3){
+  let x =5;
+    console.log(x);
+    }
+console.log(x)
+//5
+//3
+
+var p = 3;
+if(x===3){
+  var p =5;
+    console.log(p);
+    }
+console.log(p)
+//5
+//5
+```
