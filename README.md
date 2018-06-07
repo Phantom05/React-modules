@@ -1365,3 +1365,56 @@ const o ={
 console.log(o.func())
 //이렇게도 가능하다.
 ```
+
+```js
+내부함수
+arrow function 은 객체 내에서 내부함수로 쓰일때 this가 객체자신을 가르킨다.
+객체 메소드내의 함수에서 this를 사용하면 window를 가르키는게 es5함수식에선 그랬다.
+const o ={
+      name:'Jurie',
+      greetBackwards:function(){
+        const getReverseName = ()=>{
+          let nameBackwards = '';
+          for(let i = this.name.length-1; i>=0;i--){
+            nameBackwards += this.name[i];
+          }
+          return nameBackwards;
+        };
+        return `${getReverseName()} si eman ym, olleH`
+      }
+    }
+    
+    console.log(
+      o.greetBackwards()
+    )
+    //eiruJ si eman ym, olleH
+
+const k ={
+      name:'Juri',
+      func:function(){
+        return (()=>{
+          return this
+        })()
+      }
+    }
+
+    console.log(
+      k.func()
+    )
+    // name: Juri
+    하지만 에로우 함수 내부 에로우에선 역시 window를 가르키게 된다.
+     const k ={
+      name:'Juri',
+      func:()=>{
+        return (()=>{
+          return this
+        })()
+      }
+    }
+
+    console.log(
+      k.func()
+    )
+    //window
+
+```
