@@ -1494,3 +1494,102 @@ console.log(p)
 //5
 //5
 ```
+
+## React에서 다른 메소드 및 즉시실행 함수와 생략기호
+
+```js
+import React, { Component } from 'react';
+
+let helloWorldReactElement = <h1>Hello world</h1>
+class App extends Component {
+  geatUrl(){
+    return 'Im a gearUrl';
+  }
+
+  render() {
+    let age = 27;
+    return(
+      <div>
+        <Takey  name='junyeong' age='27' />
+        <ProfileLink name='kia'/>
+        {this.geatUrl()}
+         {helloWorldReactElement}
+      </div>
+    )
+  }
+}
+```
+```js
+class ProfileLink extends Component{
+  render(){
+    return(
+      ((amy)=>{
+        if(amy){
+          return (<div>Hello world</div>)
+        }
+      })(this.props.name)
+      //이렇게 즉시 실행 함수일 시 바로 매개변수로 넣어주면 편하다
+    )
+  }
+}
+
+class Takey extends Component{
+  render(){
+    return(
+      <h1 {...this.props}>My age is {this.props.age}</h1>
+      //태그 안쪽에다 ...this.props를 하면 모든 props를 가져오게 된다.
+    )
+  }
+}
+export default App;
+```
+
+## 삼항연산자 꿀팁
+```js
+class App extends Component {
+  render() {
+    let age = 27;
+    return(
+      <div>
+        <ProfileLink user='user'/>
+        <ProfileLink />
+      </div>
+    )
+  }
+}
+```
+```js
+class ProfileLink extends Component{
+  render(){
+    let sesstionFlag = this.props.user
+    return(
+      <div>
+        <a href={(sesstionFlag)?'./logout':'./login'}>
+        //삼항 연산자로 props의 유무에 따라 주소값을 바꾼다.
+          {(sesstionFlag)?'Logout':'Login'}
+          //삼항 연산자로 props의 유무에 따라 내용이 바뀐다.
+        </a>
+      </div>
+    )
+  }
+}
+```
+
+## 리액트에서 if/else 조건문을 구현할 때는 다음과 같은 방법을 사용하자
++ return 문 이전에 JSX 외부에서 변수를 선언 한 후 JSX내부에서 {}로 변수호출
++ JSX내부에서 즉시실행 함수 사용
++ 삼항연산자 사용
++ RETURN 문 이전에 JSX 외부에서 값을 반환하느 ㄴ함수 표현식을 선언한 후  JSX내부에서 {}로 실행
+```js
+class ProfileLink extends Component{
+  render(){
+    //JSX를 사용하지 않는 영약: 변수, if/else 문, 삼항연산자를 사용
+    return(
+      <div /*아 주석은 이렇게도 사용 가능하다.*/>
+        //JSX: 삼항 연산자 또는 함수 실행 결과를 {}로 표시
+      </div>
+    )
+  }
+}
+
+```
