@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+  //컴포넌트마다 별개로 동작하기때문에 여러개의 컴포넌트를 랜더링에 넣었을때, 각기 다른 스테이트를 갖는다.
+    class GuGuDan extends React.Component{
+      // constructor(props){
+      //   super(props);
+      //   this.state = {
+      //     first:Math.ceil(Math.random() * 9),
+      //     second:Math.ceil(Math.random() * 9),
+      //     value:'',
+      //     result:'',
+      //   };
+      // }
+
+      state = {
+          first:Math.ceil(Math.random() * 9),
+          second:Math.ceil(Math.random() * 9),
+          value:'',
+          result:'',
+        };
+
+      //변할 것들은 다 스테이트에 넣어주고
+      // 이벤트들은 다 함수로 만들어준다.
+
+      /*
+        함수를 쓸때는 반드시 화살표 함수를 써야지 this가 클래스를 타겟함 그냥 funtion(e){  하고 this를 찍으면 winodw가 찍힘}
+        그리고 컨스트럭트가 햇갈리면 빼버리면 됨.
+        클래스 공부 extends 공부 화살표함수 공부 클래스에서 함수쓰는거 공부 
+        document.createDocumentFragment 공부
+        
+        리액트를 공부하면서 자바스크립트모르는게 나오면 자바스크립트를 공부.
+
+        state = {
+          first:Math.ceil(Math.random() * 9),
+          second:Math.ceil(Math.random() * 9),
+          value:'',
+          result:'',
+        };
+        이렇게
+
+
+        setStaTe는 비동기
+
+        예전스테이트로 새로운 스테이트를 만들떄는 셋스테이트에 리턴을 해주는걸로
+      */
+
+      onSubmitForm = (e)=>{
+                e.preventDefault();
+                if(parseInt(this.state.value) === this.state.first * this.state.second){
+                  this.setState((prevState)=>{
+                    return {
+                      first:Math.ceil(Math.random() * 9),
+                      second:Math.ceil(Math.random() * 9),
+                      value:'',
+                      result:`정답은? ${prevState.value }`,
+                    }
+                  });
+                }else{
+                  this.setState({
+                    result:'땡',
+                    value:''
+                  });
+                }
+                this.hello.focus()
+              }
+
+      onChangeInput = (e)=> this.setState({value:e.target.value}); // 단지 클래스의 메서드로 선언한것뿐.
+
+
+     inputRef = (c) => this.hello = c;
+
+      render(){
+        console.log('렌더링')
+        return (
+          <React.Fragment>
+              <div>{this.state.first} 곱하기 {this.state.second}는?</div>
+              <form onSubmit={this.onSubmitForm}>
+                <input ref={this.inputRef} type="number" value={this.state.value} onChange={this.onChangeInput} />
+                <button id="id" className="" type="submit">입력! </button>
+              </form>
+              <div> {this.state.result}</div>
+          </React.Fragment>
+        );
+      }
+    }
+
+  </script>
+  <script type="text/babel">
+    ReactDOM.render(
+    <div>
+        <GuGuDan />
+    </div>, document.querySelector('#root'))
+  </script>
+</body>
+
+</html>

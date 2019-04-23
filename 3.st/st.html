@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+
+    class SignForm extends React.Component{
+      state={
+        submitState:false,
+        btnControl:{
+          num:0
+        }
+      }
+
+
+      onSubmit = (e)=>{
+        e.preventDefault();
+        // console.log(e.target)
+    
+
+
+        let allFillarr=['email','username','password','address'];
+
+        let ts = allFillarr.filter(el => {
+          return e.target[el].value.trim().length
+        });
+
+        if(ts.length !== 4){
+          alert('칸을 모두 채워주세요')
+        }else{
+
+          this.setState({
+            submitState:true,
+          })
+
+        }
+
+      }
+
+      onKeyDown = (e) => {
+        console.log(e.target.value)
+      }
+
+
+      btnBox = (e) =>{
+        if(+e.target.getAttribute('data-name')){
+          this.setState((preveState)=>{
+            return{ //이런식으로 setState에 함수를 넣어주면 매개변수로 this.state를 받아올수 잇따.
+              btnControl:{
+              num: preveState.btnControl.num = preveState.btnControl.num +1
+             }
+            }
+          })
+        }else{
+          this.setState({
+            btnControl:{
+              num: this.state.btnControl.num = this.state.btnControl.num -1
+             }
+          })
+        }
+      }
+      render(){
+        return (
+          <React.Fragment> 
+            <div className="wrap">
+            <h1>회원가입 양식</h1>
+              <form action="/contact" onSubmit={this.onSubmit} method="POST">
+                <div> 
+                    <label htmlFor="username">username : </label>
+                    <input type="text" name="username" id="username" onKeyDown={this.onKeyDown} />
+                </div>
+                <div> 
+                    <label htmlFor="password">password : </label>
+                    <input type="text" name="password" id="password" />
+                </div>                
+                <div> 
+                    <label htmlFor="email">email : </label>
+                    <input type="text" name="email" id="email" />
+                </div>                
+                <div> 
+                    <label htmlFor="address">address : </label>
+                    <input type="text" name="address" id="address" />
+                </div>
+                <div>
+                    <input type="submit" value={(this.state.submitState)?"대기":'전송'} />
+                </div>
+              </form>
+            </div>
+
+
+
+            <div>
+              <div onClick={this.btnBox}>
+              <button data-name="1"> 
+                증가버튼
+              </button>
+
+              <button data-name="0"> 
+                감소버튼
+              </button>
+              </div>
+              <h1>
+                {this.state.btnControl.num}
+              </h1>
+            </div>
+          </React.Fragment>
+        )
+      }
+    }
+
+  </script>
+  <script type="text/babel">
+    ReactDOM.render(
+    <div>
+      <SignForm />
+    </div>, document.querySelector('#root'))
+  </script>
+</body>
+
+</html>
