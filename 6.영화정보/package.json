@@ -14,7 +14,9 @@
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
+    "babel-polyfill": "^6.26.0",
     "react-hot-loader": "^4.8.4",
+    "react-lines-ellipsis": "^0.14.1",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"

@@ -2,8 +2,9 @@ import React  from 'react';
 import ReactDom from 'react-dom';
 import { hot }  from'react-hot-loader/root'; 
 
-import ResponseCheck from './ResponseCheck';
+import MovieApp from './MovieApp';
 
-const Hot = hot(ResponseCheck)
+const Hot = hot(MovieApp)
 
 ReactDom.render(<Hot />, document.querySelector('#root'))
+

@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+ 
 
 module.exports = {
   name:'googoodan-setting',
@@ -10,7 +11,7 @@ module.exports = {
   },
 
   entry:{
-    app:['./client'],
+    app:['babel-polyfill','./client'],
   },
 
   module:{
