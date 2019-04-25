@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --hot"
+    "dev": "webpack-dev-server --hot",
+    "deploy":"gh-pages -d build"
   },
   "author": "phantom",
   "license": "ISC",
@@ -24,5 +25,6 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
-  }
+  },
+  "homepage": "https://github.com/Phantom05/class"
 }
