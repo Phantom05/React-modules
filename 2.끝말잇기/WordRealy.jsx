@@ -10,7 +10,6 @@ class WordRealy extends Component{
     value: '',
     result:'',
   }
-
   onSubmitForm = (e)=>{
     e.preventDefault();
 
@@ -28,7 +27,6 @@ class WordRealy extends Component{
       })
     }
   }
-
   onChangeInput = (e)=>{
     this.setState({ 
       value:e.currentTarget.value

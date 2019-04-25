@@ -12,6 +12,14 @@ import WordRelayHooks from './WordRelayHooks';
 import NumberBaseballClass from './NumberBaseballClass';
 import NumberBaseballHooks from './NumberBaseballHooks';
 
+import ReportClass from './ReportClass';
+import ReportHooks from './ReportHooks';
+
+import ResponseCheckClass from './ResponseCheckClass';
+import ResponseCheckHooks from './ResponseCheckHooks';
+
+
+
 
 
 
@@ -25,6 +33,11 @@ const Module = () =>{
       <WordRelayHooks />
       <NumberBaseballClass />
       <NumberBaseballHooks />
+      <ResponseCheckClass />
+      <ResponseCheckHooks />
+      <ReportClass />
+      <ReportHooks />
+
     </>
   )
 };
