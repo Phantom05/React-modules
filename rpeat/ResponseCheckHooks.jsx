@@ -21,7 +21,7 @@ const ResponseCheckHooks = memo(() => {
           startTime.current= new Date();
         }, Math.floor(Math.random() * 1000) + 2000)
     } else if (state === 'ready') {
-      clearTimeout(ResponseCheckHooks.timeOut);
+      clearTimeout(timeOut.current);
       setState('waiting');
       setMessage('너무 성급하시군요! 초록색이 된 후에 클릭하세요')
     } else if (state === 'now') {
