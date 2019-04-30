@@ -1,0 +1,44 @@
+@import './Common/Mixin';
+
+.Signup{
+
+  .hello{
+    color: red;
+  }
+  .box{
+    &.red{
+      background: red;
+      @include square(5)
+    }
+  }
+
+  .input__label{
+    display: inline-block;
+    width: 100px;
+
+  }
+  .btn{
+    display: inline-block;
+    width: 275px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 0;
+    background: rgb(7, 91, 102);
+    color: #fff;
+    margin-top: 20px;
+    &:hover{
+      background: black;
+      color: #fff;
+      transition: .5s ease;
+    }
+  }
+  .result{
+    font-size: 13px;
+    margin-top: 20px;
+
+  }
+}
+
+
+
