@@ -15,7 +15,14 @@ module.exports = {
   },
 
   module:{
-    rules:[{
+    rules:[
+      {
+        // test:/\.css$/,
+        // use:['style-loader','css-loader'],
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader'
+      }
+      ,{
       test:/\.jsx?/,
       loader:'babel-loader',
       options:{
@@ -33,7 +40,7 @@ module.exports = {
     }]
   },
   plugins:[
-    new webpack.LoaderOptionsPlugin({debug:true})
+    new webpack.LoaderOptionsPlugin({debug:true}),
   ],
   output:{
     path:path.join(__dirname,'dist'),

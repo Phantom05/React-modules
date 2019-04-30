@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Ball from './Ball';
+import './ball.scss';
 
 function getWinNumbers() {
   console.log('getWinNumbers');
@@ -75,11 +76,14 @@ const Lotto = () => {
 
   return (
     <>
-      <div>당첨 숫자</div>
+      <div className="Ball title">당첨 숫자</div>
       <div id="결과창">
         {winBalls.map((v) => <Ball key={v} number={v} />)}
       </div>
-      <div>보너스!</div>
+      <div className="Ball wow">
+        <div className="Ball bonus">보너스!</div>
+      </div>
+      
       {bonus && <Ball number={bonus} />}
       <button onClick={redo ? onClickRedo : () => {}}>한 번 더!</button>
     </>
