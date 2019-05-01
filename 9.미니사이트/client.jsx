@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDom from 'react-dom';
 
-import Signup from './Signup';
+
+import Main  from './src/Main/Main';
 
 const Module = ()=>{
   return(
     <>
-      <Signup />
+      <Main />
     </>
   )
 }

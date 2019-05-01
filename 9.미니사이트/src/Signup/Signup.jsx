@@ -1,25 +1,20 @@
 import React, {Component} from 'react';
-import './Common/Common.scss';
-import './Signup.scss';
+import '../Common/Common.scss';
+// import './Signup.scss';
 
-import Header from './Common/Header';
+
 
 
 
 class Signup extends Component{
   state={
-    header:{
-      title:'Home'
-    },
     result:''
   }
-
 
   onSubmit = (e) =>{
     e.preventDefault();
     const tar = e.target;
 
-    
     const infoArr = [tar.username.value,tar.password.value,tar.age.value];
     if(infoArr.filter(x=> x).length < 3){
       alert('모두 입력해주세요')
@@ -29,14 +24,12 @@ class Signup extends Component{
       })
     }
 
-
-    
   }
   render(){
     return(
       <>
         <div className="Signup">
-        <Header data={this.state.header} />
+       
           <div className="wrap">
           <h1>회원가입</h1>
             <form action="" method="POST" onSubmit={this.onSubmit}>
