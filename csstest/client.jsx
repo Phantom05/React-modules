@@ -6,8 +6,6 @@ if (!global._babelPolyfill) {
 }
 import Main  from './src/Main/Main';
 
-ReactDom.render(<Main />, document.querySelector('#root'))
-
 // import {hot} from 'react-hot-loader/root';
 
 // const Module = ()=>{
@@ -19,3 +17,5 @@ ReactDom.render(<Main />, document.querySelector('#root'))
 // }
 
 // const Hot = hot(Module)
+
+ReactDom.render(<Main />, document.querySelector('#root'))
