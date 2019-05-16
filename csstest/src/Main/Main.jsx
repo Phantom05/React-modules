@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import "./Main.scss";
 import '../About/About';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+
 
 const MenuItem = ({active, children, to}) => (
   <div className="menu-item">
